@@ -2,6 +2,7 @@ package com.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -51,13 +52,16 @@ public class RegisterActivity extends AppCompatActivity {
         send.enqueue(new Callback<UserAccountRequestDto>() {
             @Override
             public void onResponse(Call<UserAccountRequestDto> call, Response<UserAccountRequestDto> response) {
-                System.out.println("berhasil");
-                Toast.makeText(RegisterActivity.this, "berhasil daftar", Toast.LENGTH_SHORT).show();
+                if (response.isSuccessful()){
+                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
 
             @Override
             public void onFailure(Call<UserAccountRequestDto> call, Throwable t) {
-                System.err.println("fail");
+                System.err.println("fail: "+t.getMessage());
             }
         });
     }
